@@ -88,12 +88,12 @@ If using the container, make sure to mount the directory where is the binary of 
 
 * No shell
 ```bash
-apptainer exec --bind /path/to/binary/dir,/path/to/data /path/to/container/image /path/to/binary/dir/reorder fof.txt fof_msh.txt 0 output.txt
+apptainer exec --bind /path/to/binary/dir,/path/to/data /path/to/container/container.sif /path/to/binary/dir/reorder fof.txt fof_msh.txt 0 output.txt
 ```
 
 * Interactive shell
 ```bash
-apptainer shell --bind /path/to/binary/dir,/path/to/data /path/to/container/image  
+apptainer shell --bind /path/to/binary/dir,/path/to/data /path/to/container/container.sif  
 /path/to/binary/dir/reorder fof.txt fof_msh.txt 0 output.txt
 ```
 
