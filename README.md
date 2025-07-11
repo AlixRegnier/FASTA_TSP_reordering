@@ -93,7 +93,7 @@ apptainer exec --bind /path/to/binary/dir,/path/to/data /path/to/container/image
 
 * Interactive shell
 ```bash
-apptainer shell --bind /path/to/binary/dir,/path/to/data /path/to/container/image
+apptainer shell --bind /path/to/binary/dir,/path/to/data /path/to/container/image  
 /path/to/binary/dir/reorder fof.txt fof_msh.txt 0 output.txt
 ```
 
