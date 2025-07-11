@@ -55,8 +55,7 @@ groupsize|Memory
 100,000 | 50 GiB
 1,000,000 | 5 TiB
 
-**Estimation formula:**
-$$\text{memory} \approx (4n^2 + 2n)\,\,\text{bytes}$$
+**Estimation formula:** $\text{memory} \approx (4n^2 + 2n)$ bytes
 
 Current implementation use a triangle matrix for storing distances. Each distance takes 8 bytes (double type).
 
