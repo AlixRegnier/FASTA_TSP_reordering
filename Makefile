@@ -1,4 +1,4 @@
-FLAGS=-std=c++17 -O3 -march=native -pedantic -Wall
+FLAGS=-std=c++11 -O3 -march=native -pedantic -Wall
 
 all: reorder
 

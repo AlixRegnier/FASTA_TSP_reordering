@@ -1,0 +1,13 @@
+Bootstrap: docker
+From: staphb/mash:latest
+
+%post
+	apt update
+	apt upgrade -y
+	apt install -y build-essential time nano bc
+	
+%labels
+	Author alix.regnier@inria.fr
+
+%help
+	Contains Mash and some packages required to compile C++ code and execute it. Build from Mash docker recipes

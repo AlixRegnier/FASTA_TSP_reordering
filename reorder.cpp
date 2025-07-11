@@ -110,6 +110,8 @@ namespace Reorder
     //TSP path
     void build_double_end_NN(DistanceMatrix& distanceMatrix, const std::vector<std::string>& FILES, const std::size_t OFFSET, std::vector<unsigned>& order)
     {
+        DECLARE_TIMER;
+
         //Pick a random first vertex
         unsigned firstVertex = RNG::rand_uint32_t(0, distanceMatrix.width());
         
@@ -139,9 +141,11 @@ namespace Reorder
             [&distanceMatrix](unsigned a, unsigned b, double d) { distanceMatrix.set(a, b, d); }
         );
 
-        std::cout << "Build VPTree.." << std::endl;
+        std::cout << "Build VPTree ... ";
 
+        START_TIMER;
         VPTree<unsigned> root(vertices, &df);
+        END_TIMER;
 
         //Find second vertex
         IndexDistance second = find_closest_vertex(root, firstVertex, alreadyAdded);
@@ -154,11 +158,13 @@ namespace Reorder
         IndexDistance a = find_closest_vertex(root, orderDeque.front(), alreadyAdded);
         IndexDistance b = find_closest_vertex(root, orderDeque.back(), alreadyAdded);
 
-        std::cout << "Build path.." << std::endl;
+        std::cout << "Build path ..." << std::endl;
         //Find next vertices to add by checking which is the minimum to take
+
+        START_TIMER;
         for(unsigned i = 2; i < distanceMatrix.width(); ++i)
         {
-            //std::cout << "\r" << (i+1) << " / " << distanceMatrix.width();
+            std::cout << "\r" << (i+1) << " / " << distanceMatrix.width();
             if(a.distance < b.distance)
             {
                 orderDeque.push_front(a.index);
@@ -181,7 +187,10 @@ namespace Reorder
             }
         }
 
-        std::cout << "\tComputed distances (VPTree): " << counter << "/" << (distanceMatrix.width() * (distanceMatrix.width() - 1) / 2) <<  std::endl;
+        std::cout << "\nTime spent for path computation: ";
+        END_TIMER;
+
+        std::cout << "\nComputed distances (VPTree): " << counter << "/" << (distanceMatrix.width() * (distanceMatrix.width() - 1) / 2) <<  std::endl;
 
         //Store global order
         for(unsigned i = 0; i < distanceMatrix.width(); ++i)
@@ -227,9 +236,10 @@ namespace Reorder
         order.resize(files_fa.size());
 
         //Approximate TSP path with double ended Nearest-Neighbor; compute order
-        std::cout << "Computing column order using TSP ... " << std::endl;
         START_TIMER;
         TSP_NN(files_msh, GROUPSIZE, order);
+
+        std::cout << "TSP total running time: ";
         END_TIMER;
 
         //Serialize column order
@@ -250,7 +260,7 @@ int main(int argc, char ** argv)
 {
     if(argc != 5)
     {
-        std::cout << "Usage: reorder <fof_fa> <fof_msh> <group> <output>\n\n";
+        std::cout << "Usage: reorder <fof_fa> <fof_msh> <groupsize> <output>\n\nfof_fa\t\tFile of files containing paths to FASTA files\nfof_msh\t\tFile of files containing paths to sketches\ngroupsize\tBatch FASTA files into groups of size <groupsize> (last group may be smaller), put 0 if you want to create only one group containing all FASTA files\noutput\t\tOutput file of files, a permutation of <fof_fa> according to path TSP\n\n";
         return 1;
     }
 
